@@ -70,6 +70,10 @@ class NeuralNetwork(object):
             nabla_cost_weights[-l] = np.dot(derivative_cx_wrt_bias, activations[-l-1].T)
         
         return (nabla_cost_biases, nabla_cost_weights)
+    
+    # now we can apply backporpogation to update the weights and biases of the network
+    # but the issue is that, for the true cost function, we need to sum over all the training examples
+    # 
         
 
         
