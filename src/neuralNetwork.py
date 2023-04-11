@@ -111,36 +111,20 @@ class NeuralNetwork(object):
     # and comparing the output of the network with the actual output
 
     def evaluate(self, test_data):
-        test_results = [(np.argmax(self.feedforward(x)), y) for (x, y) in test_data]
-        for r in test_results:
-            print(r)
-            print("------------------")
+        test_results = [(np.argmax(self.feedforward(x)), np.argmax(y)) for (x, y) in test_data]
         return sum(int(x == y) for (x, y) in test_results)
 
 # Test the neural network
 
-# load the data
-def load_data():
-    training_data = pd.read_csv("../data/mnist_train.csv")
-    test_data = pd.read_csv("../data/mnist_test.csv")
 
-    training_data = training_data.values
-    test_data = test_data.values
-
-    print(training_data.shape)
-    print(test_data.shape)
-
-    training_data = [(x[1:].reshape(784, 1), vectorized_result(x[0])) for x in training_data]
-    test_data = [(x[1:].reshape(784, 1), vectorized_result(x[0])) for x in test_data]
-    
-
-
-    return (training_data, test_data)
 
 def vectorized_result(j):
     e = np.zeros((10, 1))
     e[j] = 1.0
     return e
+
+def value_from_vector(v):
+    return np.argmax(v)
 
 
 # run the neural network
