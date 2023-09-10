@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
+
 # Sigmoid function for activation
 def sigmoid(z):
     return 1.0 / (1.0 + np.exp(-z))
