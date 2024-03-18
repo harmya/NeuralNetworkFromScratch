@@ -129,14 +129,8 @@ def value_from_vector(v):
 
 
 # run the neural network
-
-training_data, test_data = load_data()
 net = NeuralNetwork([784, 30, 10])
 net.train(training_data, 30, 10, 3.0, test_data=test_data)
-
-# the network is trained and we can now test it
-
-
 
 
     
