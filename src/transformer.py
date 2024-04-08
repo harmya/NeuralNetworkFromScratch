@@ -201,3 +201,14 @@ def calculate_loss():
             total_loss += loss
             total_batches += 1
         print(f'{split} loss: {total_loss / total_batches}')
+
+
+for epoch in range(1000):
+    x, y = get_batch('train')
+    x, y = x.to(device), y.to(device)
+    logits, loss = model(x, y)
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+    if epoch % 100 == 0:
+        print(f'epoch {epoch} loss: {loss}')
