@@ -33,3 +33,9 @@ def encode_string(s):
 
 def decode_string(v):
     return ''.join([intToString[i] for i in v])
+
+
+data = torch.tensor(encode_string(text), dtype=torch.long)
+n = int(0.85*len(data))
+train_data = data[:n]
+val_data = data[n:]
