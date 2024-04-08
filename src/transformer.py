@@ -212,3 +212,13 @@ for epoch in range(1000):
     optimizer.step()
     if epoch % 100 == 0:
         print(f'epoch {epoch} loss: {loss}')
+
+# generate text
+x = torch.zeros((1, 1), dtype=torch.long)
+generated = model.generate(x, 1000)
+g = decode(generated[0].tolist())
+print(g)
+print(len(g))
+# send to file
+with open('generated_text.txt', 'w') as f:
+    f.write(decode(generated[0].tolist()))
