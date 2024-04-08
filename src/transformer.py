@@ -133,3 +133,19 @@ class FeedForward(nn.Module):
     
     def forward(self, x):
         return self.linear_layer(x)
+
+class Block(nn.Module):
+    def __init__(self, d_embed, num_heads):
+        super().__init__()
+        head_size = d_embed // num_heads # head_size is "how" much of the embedding is "seen" by each head
+        self.multi_head_attention = MultiHeadAttention(head_size, num_heads)
+        self.layer_norm1 = nn.LayerNorm(d_embed)
+        self.feed_forward_layer = FeedForward(d_embed)
+        self.layer_norm2 = nn.LayerNorm(d_embed)
+    
+    def forward(self, x):
+        attention = self.multi_head_attention(x)
+        x = self.layer_norm1(x + attention)
+        feed_forward = self.feed_forward_layer(x)
+        return self.layer_norm2(x + feed_forward)
+
