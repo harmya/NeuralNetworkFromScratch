@@ -121,3 +121,15 @@ class MultiHeadAttention(nn.Module):
     def forward(self, x):
         head_outputs = torch.cat([head(x) for head in self.heads], dim=-1) #[h1 h2 h3 ... hn]
         return self.linear_layer(head_outputs)
+
+class FeedForward(nn.Module):
+    def __init__(self, d_embed):
+        super().__init__()
+        self.linear_layer = nn.Sequential(
+            nn.Linear(d_embed, 4 * d_embed),
+            nn.ReLU(),
+            nn.Linear(4 * d_embed, d_embed)
+        )
+    
+    def forward(self, x):
+        return self.linear_layer(x)
