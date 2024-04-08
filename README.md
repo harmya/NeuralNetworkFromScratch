@@ -1,4 +1,3 @@
-# Neural Network for Image Classification: In Progress
+# Neural Networks From Scratch
 
-### This is a simple neural network made from scratch using only math.
-### It is a 3 layer neural network with 1 hidden layer. It is trained on the MNIST dataset.
+### Implementations of Neural Network architectures from first principles
