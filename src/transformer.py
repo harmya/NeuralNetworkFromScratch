@@ -53,3 +53,16 @@ print(example_x.shape, example_y.shape)
 print((example_x[0][:10], example_y[0][101]))
 print(decode_string(example_x[0][:50].tolist()))
 print(decode_string(example_y[0][:50].tolist()))
+
+class InputEmbeddings(nn.Module):
+    def __init__(self, d_embed : int, vocab_size : int):
+        super().__init__()
+        self.d_embed = d_embed
+        self.vocab_size = vocab_size
+        self.embedding = nn.Embedding(vocab_size, d_embed) # embedding[10] 
+        
+    def forward(self, x):
+        # this takes in a (batch_size, context_length) tensor and returns a (batch_size, context_length, d_embed) tensor 
+        # it maps each token to its embedding
+        return self.embedding(x) * math.sqrt(self.d_embed)
+
