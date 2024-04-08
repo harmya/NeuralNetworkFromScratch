@@ -182,3 +182,9 @@ class Transformer(nn.Module):
                 next_token = torch.multinomial(probs, num_samples=1)
                 x = torch.cat([x, next_token], dim=-1)
         return x
+
+
+model = Transformer(d_embed, num_heads, num_decoder_blocks)
+weights = torch.load('transformer.pth', map_location=device)
+model.load_state_dict(weights, strict=False)
+optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
