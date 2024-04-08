@@ -188,3 +188,16 @@ model = Transformer(d_embed, num_heads, num_decoder_blocks)
 weights = torch.load('transformer.pth', map_location=device)
 model.load_state_dict(weights, strict=False)
 optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
+
+@torch.no_grad()
+def calculate_loss():
+    model.eval()
+    for split in ['train', 'val']:
+        total_loss = 0
+        total_batches = 0
+        for i in range(100):
+            x, y = get_batch(split)
+            logits, loss = model(x, y)
+            total_loss += loss
+            total_batches += 1
+        print(f'{split} loss: {total_loss / total_batches}')
