@@ -15,3 +15,8 @@ num_heads = 8
 num_decoder_blocks = 6
 max_iterations = 4000
 learning_rate = 4e-4
+
+def load_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        text = f.read()
+    return text
