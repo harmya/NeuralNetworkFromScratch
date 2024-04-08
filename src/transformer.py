@@ -46,3 +46,10 @@ def get_batch(split):
     x = torch.stack([data[i : i + context_length] for i in ix])
     y = torch.stack([data[i + 1 : i + context_length+1] for i in ix])
     return x, y
+
+
+example_x, example_y = get_batch('train')
+print(example_x.shape, example_y.shape)
+print((example_x[0][:10], example_y[0][101]))
+print(decode_string(example_x[0][:50].tolist()))
+print(decode_string(example_y[0][:50].tolist()))
