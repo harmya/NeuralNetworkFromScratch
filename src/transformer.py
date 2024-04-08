@@ -5,3 +5,5 @@ import torch
 import torch.nn as nn
 import math
 import re
+
+device = torch.device("mps") if torch.backends.mps.is_available() else "cpu"
