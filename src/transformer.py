@@ -20,3 +20,16 @@ def load_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         text = f.read()
     return text
+
+# print(text[:500])
+
+characters = sorted(list(set(text)))
+vocab_size = len(characters)
+stringToInt = {ch : i for i,ch in enumerate(characters)}
+intToString = {i : ch for i,ch in enumerate(characters)}
+
+def encode_string(s):
+    return [stringToInt[ch] for ch in s]
+
+def decode_string(v):
+    return ''.join([intToString[i] for i in v])
