@@ -39,3 +39,10 @@ data = torch.tensor(encode_string(text), dtype=torch.long)
 n = int(0.85*len(data))
 train_data = data[:n]
 val_data = data[n:]
+
+def get_batch(split):
+    data = train_data if split == 'train' else val_data
+    ix = torch.randint(len(data) - context_length, (batch_size,))
+    x = torch.stack([data[i : i + context_length] for i in ix])
+    y = torch.stack([data[i + 1 : i + context_length+1] for i in ix])
+    return x, y
