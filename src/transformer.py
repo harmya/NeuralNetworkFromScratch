@@ -111,3 +111,13 @@ class Head(nn.Module):
 
         attention = scaled_qkt @ V
         return attention
+
+class MultiHeadAttention(nn.Module):
+    def __init__(self, num_heads, head_size):
+        super().__init__()
+        self.heads = nn.ModuleList([Head(head_size) for i in range(num_heads)])
+        self.linear_layer = nn.Linear(head_size * num_heads, d_embed) # head_size * num_heads = d_embed (usually)
+
+    def forward(self, x):
+        head_outputs = torch.cat([head(x) for head in self.heads], dim=-1) #[h1 h2 h3 ... hn]
+        return self.linear_layer(head_outputs)
