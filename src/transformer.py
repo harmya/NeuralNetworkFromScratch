@@ -86,3 +86,28 @@ class PositionalEncoding(nn.Module):
     
     def forward(self, x):
         return (x + self.positional_encoding[: , :x.shape[1], :])
+
+class Head(nn.Module):
+    def __init__(self, head_size):
+        super().__init__()
+        self.key = nn.Linear(d_embed, head_size, bias=False)
+        self.query = nn.Linear(d_embed, head_size, bias=False)
+        self.value = nn.Linear(d_embed, head_size, bias=False)
+        self.mask = torch.tril(torch.ones(context_length, context_length))
+        # mask is a lower triangular matrix of shape (context_length, context_length)
+        # we use this to prevent the model from looking into the future
+        # for each position i, we set the mask to 0 for all positions j where j > i
+        # this way, the model can only attend to positions before i
+    
+    def forward(self, x):
+
+        batch_size, sequence_length, feature_dimension = x.shape
+        K = self.key(x)
+        Q = self.query(x)
+        q_kt = Q @ K.transpose(-2, -1) / np.sqrt(feature_dimension) 
+        q_kt = q_kt.masked_fill(self.mask[:sequence_length, :sequence_length] == 0, float('-inf'))
+        scaled_qkt = torch.nn.functional.softmax(q_kt, dim=-1)
+        V = self.value(x)
+
+        attention = scaled_qkt @ V
+        return attention
