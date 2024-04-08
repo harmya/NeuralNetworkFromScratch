@@ -66,3 +66,23 @@ class InputEmbeddings(nn.Module):
         # it maps each token to its embedding
         return self.embedding(x) * math.sqrt(self.d_embed)
 
+class PositionalEncoding(nn.Module):
+    def __init__(self, d_embed, context_length):
+        super().__init__()
+        self.d_embed = d_embed
+        self.context_length = context_length
+        # initialize the positional encoding of size (context_length, d_embed)
+        # for each position in context_length, we have a d_embed dimensional vector
+        positional_encoding = torch.zeros(context_length, d_embed)
+        # [0, 1, 2, 3, ..., context_length-1]
+        position_index = torch.arange(0, context_length, dtype=torch.float).unsqueeze(1) # (seq_len, 1)
+        # 10000^(2i/d_embed) where i is the dimension of the positional encoding
+        denominator = torch.exp(torch.arange(0, d_embed, 2).float() * (-math.log(10000.0) / d_embed))
+        
+        positional_encoding[ : , 0::2] = torch.sin(position_index * denominator)
+        positional_encoding[ : , 1::2] = torch.cos(position_index * denominator)
+        positional_encoding = positional_encoding.unsqueeze(0)
+        self.register_buffer('positional_encoding', positional_encoding)
+    
+    def forward(self, x):
+        return (x + self.positional_encoding[: , :x.shape[1], :])
